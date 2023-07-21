@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema } from '../../helpers/validation';
+import AuthInput from './authInput';
 
 export default function RegisterForm() {
   const {
@@ -22,7 +23,41 @@ export default function RegisterForm() {
           <p className="mt-2 text-sm">Sign up</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
-          <input type="text" {...register('name')} />
+          <AuthInput
+            name="firstName"
+            type="text"
+            placeholder="First name"
+            register={register}
+            error={errors?.firstName?.message}
+          />
+          <AuthInput
+            name="lastName"
+            type="text"
+            placeholder="Last name"
+            register={register}
+            error={errors?.lastName?.message}
+          />
+          <AuthInput
+            name="email"
+            type="email"
+            placeholder="Email address"
+            register={register}
+            error={errors?.email?.message}
+          />
+          <AuthInput
+            name="status"
+            type="text"
+            placeholder="Status"
+            register={register}
+            error={errors?.status?.message}
+          />
+          <AuthInput
+            name="password"
+            type="password"
+            placeholder="Password"
+            register={register}
+            error={errors?.password?.message}
+          />
           <button type="submit">Submit</button>
         </form>
       </div>
