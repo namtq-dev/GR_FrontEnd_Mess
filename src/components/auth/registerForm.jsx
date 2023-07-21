@@ -2,12 +2,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema } from '../../helpers/validation';
 import AuthInput from './authInput';
+import { useSelector } from 'react-redux';
+import { PulseLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 
 export default function RegisterForm() {
+  const { user } = useSelector((state) => ({ ...state }));
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(registerSchema),
@@ -44,13 +48,13 @@ export default function RegisterForm() {
             register={register}
             error={errors?.email?.message}
           />
-          <AuthInput
+          {/* <AuthInput
             name="status"
             type="text"
             placeholder="Status"
             register={register}
             error={errors?.status?.message}
-          />
+          /> */}
           <AuthInput
             name="password"
             type="password"
@@ -58,7 +62,26 @@ export default function RegisterForm() {
             register={register}
             error={errors?.password?.message}
           />
-          <button type="submit">Submit</button>
+          <button
+            className="w-full flex justify-center bg-green_1 text-gray-100 p-4 rounded-full tracking-wide 
+            font-semibold focus:outline-none hover:bg-green_2 shadow-lg cursor-pointer transition ease-in duration-300"
+            type="submit"
+          >
+            {user.status === 'loading' ? (
+              <PulseLoader color="#fff" size={16} />
+            ) : (
+              'Sign up'
+            )}
+          </button>
+          <p className="flex flex-col items-center justify-center mt-10 text-center text-base dark:text-dark_text_1">
+            <span>Already have an account?</span>
+            <Link
+              to="/login"
+              className="hover:underline cursor-pointer transition ease-in duration-300"
+            >
+              Sign in
+            </Link>
+          </p>
         </form>
       </div>
     </div>
