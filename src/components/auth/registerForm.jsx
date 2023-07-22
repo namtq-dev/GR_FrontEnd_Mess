@@ -2,12 +2,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema } from '../../helpers/validation';
 import AuthInput from './authInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PulseLoader } from 'react-spinners';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../../reducers/features/userSlice';
 
 export default function RegisterForm() {
   const { user } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,7 +20,15 @@ export default function RegisterForm() {
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    let response = await dispatch(registerUser({ ...data }));
+    if (
+      response.payload.message ===
+      'Register successfully! Please check your email to activate your account!'
+    ) {
+      navigate('/');
+    }
+  };
 
   return (
     <div className="h-screen w-full flex items-center justify-center overflow-hidden">
@@ -62,6 +73,11 @@ export default function RegisterForm() {
             register={register}
             error={errors?.password?.message}
           />
+          {user.error && (
+            <div>
+              <p className="text-red-400">{user.error}</p>
+            </div>
+          )}
           <button
             className="w-full flex justify-center bg-green_1 text-gray-100 p-4 rounded-full tracking-wide 
             font-semibold focus:outline-none hover:bg-green_2 shadow-lg cursor-pointer transition ease-in duration-300"
