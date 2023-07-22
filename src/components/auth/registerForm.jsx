@@ -6,11 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PulseLoader } from 'react-spinners';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../reducers/features/userSlice';
+import { useState } from 'react';
+import Picture from './picture';
 
 export default function RegisterForm() {
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [picture, setPicture] = useState('');
+  const [showPicture, setShowPicture] = useState('');
 
   const {
     register,
@@ -31,8 +36,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center overflow-hidden">
-      <div className="max-w-md space-y-8 p-10 dark:bg-dark_bg_2 rounded-xl">
+    <div className="min-h-screen w-full flex items-center justify-center overflow-hidden">
+      <div className="w-full max-w-md space-y-8 p-10 dark:bg-dark_bg_2 rounded-xl">
         <div className="text-center dark:text-dark_text_1">
           <h2 className="mt-6 text-3xl font-bold">Welcome</h2>
           <p className="mt-2 text-sm">Sign up</p>
@@ -72,6 +77,11 @@ export default function RegisterForm() {
             placeholder="Password"
             register={register}
             error={errors?.password?.message}
+          />
+          <Picture
+            showPicture={showPicture}
+            setShowPicture={setShowPicture}
+            setPicture={setPicture}
           />
           {user.error && (
             <div>
