@@ -18,17 +18,17 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={!!user.loginToken ? <Home /> : <Navigate to="/login" />}
+            element={!!user?.loginToken ? <Home /> : <Navigate to="/login" />}
             exact
           ></Route>
           <Route
             path="/login"
-            element={!user.loginToken ? <Login /> : <Navigate to="/" />}
+            element={!user?.loginToken ? <Login /> : <Navigate to="/" />}
             exact
           ></Route>
           <Route
             path="/register"
-            element={!user.loginToken ? <Register /> : <Navigate to="/" />}
+            element={!user?.loginToken ? <Register /> : <Navigate to="/" />}
             exact
           ></Route>
         </Routes>
