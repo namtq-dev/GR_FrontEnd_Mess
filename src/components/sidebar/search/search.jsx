@@ -37,7 +37,7 @@ export default function Search({ searchResultsLength, setSearchResults }) {
             {showArrow || searchResultsLength > 0 ? (
               <span
                 className="w-8 flex items-center justify-center rotateAnimation cursor-pointer"
-                // onClick={() => setSearchResults([])}
+                onClick={() => setSearchResults([])}
               >
                 <ReturnIcon className="fill-green_1 w-5" />
               </span>
