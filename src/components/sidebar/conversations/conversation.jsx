@@ -10,7 +10,7 @@ export default function Conversation({ conver }) {
   const { user } = useSelector((state) => state.user);
 
   const values = {
-    receiverId: getReceiverId(user._id, conver.users),
+    receiverId: getReceiverId(user.id, conver.users),
     loginToken: user.loginToken,
   };
   const openConversation = () => {
