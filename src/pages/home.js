@@ -14,6 +14,7 @@ function Home({ socket }) {
   // get all conversations
   useEffect(() => {
     if (user?.loginToken) {
+      socket.emit('online', user.id);
       dispatch(getConversations(user.loginToken));
     }
   }, [user]);

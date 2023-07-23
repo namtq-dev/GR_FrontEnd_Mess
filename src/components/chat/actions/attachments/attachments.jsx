@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { AttachmentIcon } from '../../../../svg';
 import Menu from './menu/menu';
 
