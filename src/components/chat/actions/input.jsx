@@ -1,4 +1,4 @@
-export default function Input({ message, setMessage }) {
+export default function Input({ message, setMessage, textRef }) {
   const onChangeHandler = (eve) => {
     setMessage(eve.target.value);
   };
@@ -11,6 +11,7 @@ export default function Input({ message, setMessage }) {
         placeholder="Type a message"
         value={message}
         onChange={onChangeHandler}
+        ref={textRef}
       />
     </div>
   );

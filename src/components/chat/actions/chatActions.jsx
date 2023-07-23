@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SendIcon } from '../../../svg';
 import Attachments from './attachments';
@@ -14,6 +14,8 @@ export default function ChatActions() {
   const { user } = useSelector((state) => state.user);
 
   const [message, setMessage] = useState('');
+
+  const textRef = useRef();
 
   const values = {
     message,
@@ -34,10 +36,14 @@ export default function ChatActions() {
     >
       <div className="w-full flex items-center gap-x-2">
         <ul className="flex gap-x-2">
-          <EmojiPickerWrap />
+          <EmojiPickerWrap
+            message={message}
+            setMessage={setMessage}
+            textRef={textRef}
+          />
           <Attachments />
         </ul>
-        <Input message={message} setMessage={setMessage} />
+        <Input message={message} setMessage={setMessage} textRef={textRef} />
         <button type="submit" className="btn">
           {status === 'loading' ? (
             <DotLoader color="#e9edef" size={25} speedMultiplier={3} />
