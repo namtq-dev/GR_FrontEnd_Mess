@@ -23,7 +23,6 @@ export default function LoginForm() {
   const onSubmit = async (data) => {
     let response = await dispatch(loginUser({ ...data }));
 
-    console.log(response);
     if (response.payload.id) {
       navigate('/');
     }
