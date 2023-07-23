@@ -1,21 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrOpenConversation } from '../../../reducers/features/chatSlice';
 
-export default function Contact({ contact }) {
+export default function Contact({ contact, setSearchResults }) {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
-  const { activeConversation } = useSelector((state) => state.chat);
+  // const { activeConversation } = useSelector((state) => state.chat);
 
   const values = {
     receiverId: contact._id,
     loginToken: user.loginToken,
   };
-  const openConversation = () => {
-    dispatch(createOrOpenConversation(values));
+  const openConversation = async () => {
+    await dispatch(createOrOpenConversation(values));
+    setSearchResults([]);
   };
 
-  console.log('conver', activeConversation);
   return (
     <li
       onClick={openConversation}
