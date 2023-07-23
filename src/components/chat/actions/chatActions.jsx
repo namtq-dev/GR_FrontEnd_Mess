@@ -5,11 +5,12 @@ import Attachments from './attachments';
 import EmojiPicker from './emojiPicker';
 import Input from './input';
 import { sendMessage } from '../../../reducers/features/chatSlice';
+import { DotLoader } from 'react-spinners';
 
 export default function ChatActions() {
   const dispatch = useDispatch();
 
-  const { activeConversation } = useSelector((state) => state.chat);
+  const { activeConversation, status } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
 
   const [message, setMessage] = useState('');
@@ -38,7 +39,11 @@ export default function ChatActions() {
         </ul>
         <Input message={message} setMessage={setMessage} />
         <button type="submit" className="btn">
-          <SendIcon className="dark:fill-dark_svg_1" />
+          {status === 'loading' ? (
+            <DotLoader color="#e9edef" size={25} speedMultiplier={3} />
+          ) : (
+            <SendIcon className="dark:fill-dark_svg_1" />
+          )}
         </button>
       </div>
     </form>
