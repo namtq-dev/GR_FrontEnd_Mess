@@ -147,6 +147,17 @@ export const chatSlice = createSlice({
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.status = 'success';
         state.messages = [...state.messages, action.payload];
+
+        // update conversation in side bar
+        let newestConversation = {
+          ...action.payload.conversation,
+          latestMessage: action.payload,
+        };
+        let newConvers = [...state.conversations].filter(
+          (conver) => conver._id !== newestConversation._id
+        );
+        newConvers.unshift(newestConversation);
+        state.conversations = newConvers;
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.status = 'fail';
