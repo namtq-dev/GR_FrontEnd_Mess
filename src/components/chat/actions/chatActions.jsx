@@ -16,6 +16,7 @@ export default function ChatActions() {
   const [message, setMessage] = useState('');
   const [showAttachmentsMenu, setShowAttachmentsMenu] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [sendMessLoading, setSendMessLoading] = useState(false);
 
   const textRef = useRef();
 
@@ -27,8 +28,10 @@ export default function ChatActions() {
   };
   const sendMessageHandler = async (eve) => {
     eve.preventDefault();
+    setSendMessLoading(true);
     await dispatch(sendMessage(values));
     setMessage('');
+    setSendMessLoading(false);
   };
 
   return (
@@ -54,7 +57,7 @@ export default function ChatActions() {
         </ul>
         <Input message={message} setMessage={setMessage} textRef={textRef} />
         <button type="submit" className="btn">
-          {status === 'loading' ? (
+          {status === 'loading' && sendMessLoading ? (
             <DotLoader color="#e9edef" size={25} speedMultiplier={3} />
           ) : (
             <SendIcon className="dark:fill-dark_svg_1" />
