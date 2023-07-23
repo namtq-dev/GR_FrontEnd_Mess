@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SendIcon } from '../../../svg';
 import Attachments from './attachments';
-import EmojiPicker from './emojiPicker';
 import Input from './input';
 import { sendMessage } from '../../../reducers/features/chatSlice';
 import { DotLoader } from 'react-spinners';
+import EmojiPickerWrap from './emojiPickerWrap';
 
 export default function ChatActions() {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ export default function ChatActions() {
     >
       <div className="w-full flex items-center gap-x-2">
         <ul className="flex gap-x-2">
-          <EmojiPicker />
+          <EmojiPickerWrap />
           <Attachments />
         </ul>
         <Input message={message} setMessage={setMessage} />
