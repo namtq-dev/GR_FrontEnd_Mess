@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SendIcon } from '../../../svg';
-import Attachments from './attachments';
 import Input from './input';
 import { sendMessage } from '../../../reducers/features/chatSlice';
 import { DotLoader } from 'react-spinners';
 import EmojiPickerWrap from './emojiPickerWrap';
+import { Attachments } from './attachments';
 
 export default function ChatActions() {
   const dispatch = useDispatch();
