@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { dateHandler } from '../../../helpers/date';
 import { createOrOpenConversation } from '../../../reducers/features/chatSlice';
-import { getReceiverId } from '../../../helpers/conversation';
+import {
+  getReceiverId,
+  getReceiverName,
+  getReceiverPicture,
+} from '../../../helpers/conversation';
 import SocketContext from '../../../context/socketContext';
 
 function Conversation({ conver, socket }) {
@@ -33,14 +37,14 @@ function Conversation({ conver, socket }) {
         <div className="flex items-center gap-x-3">
           <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
             <img
-              src={conver.picture}
-              alt={conver.name}
+              src={getReceiverPicture(user.id, conver.users)}
+              alt="conversation picture"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="w-full flex flex-col">
             <h1 className="font-bold flex items-center gap-x-2">
-              {conver.name}
+              {getReceiverName(user.id, conver.users)}
             </h1>
             <div>
               <div className="flex items-center gap-x-1 dark:text-dark_text_2">
