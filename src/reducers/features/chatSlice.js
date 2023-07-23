@@ -6,6 +6,7 @@ const initialState = {
   error: '',
   conversations: [],
   activeConversation: {},
+  messages: [],
   notifications: [],
 };
 
@@ -52,6 +53,28 @@ export const createOrOpenConversation = createAsyncThunk(
   }
 );
 
+export const getMessages = createAsyncThunk(
+  'conversation/messages',
+  async (values, { rejectWithValue }) => {
+    try {
+      const { loginToken, converId } = values;
+
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/messages/${converId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        }
+      );
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const chatSlice = createSlice({
   name: 'chat',
   initialState,
@@ -81,6 +104,17 @@ export const chatSlice = createSlice({
         state.activeConversation = action.payload;
       })
       .addCase(createOrOpenConversation.rejected, (state, action) => {
+        state.status = 'fail';
+        state.error = action.payload;
+      })
+      .addCase(getMessages.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(getMessages.fulfilled, (state, action) => {
+        state.status = 'success';
+        state.messages = action.payload;
+      })
+      .addCase(getMessages.rejected, (state, action) => {
         state.status = 'fail';
         state.error = action.payload;
       });
