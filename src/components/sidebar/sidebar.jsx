@@ -11,7 +11,10 @@ export default function Sidebar() {
     <div className="w-[40%] h-full select-none">
       <SidebarHeader />
       <Notifications />
-      <Search searchResultsLength={searchResults.length} />
+      <Search
+        searchResultsLength={searchResults.length}
+        setSearchResults={setSearchResults}
+      />
       <Conversations />
     </div>
   );

@@ -1,10 +1,33 @@
 import { useState } from 'react';
 import { FilterIcon, ReturnIcon, SearchIcon } from '../../../svg';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Search({ searchResultsLength }) {
+export default function Search({ searchResultsLength, setSearchResults }) {
+  const { user } = useSelector((state) => state.user);
+
   const [showArrow, setShowArrow] = useState(false);
 
-  const handleSearch = (eve) => {};
+  const handleSearch = async (eve) => {
+    if (eve.target.value && eve.key === 'Enter') {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/searchMess?search=${eve.target.value}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.loginToken}`,
+            },
+          }
+        );
+
+        setSearchResults(data);
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
 
   return (
     <div className="h-[49px] py-1.5">
