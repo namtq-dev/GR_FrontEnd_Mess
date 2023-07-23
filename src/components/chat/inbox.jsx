@@ -7,7 +7,7 @@ import { getMessages } from '../../reducers/features/chatSlice';
 export default function Inbox() {
   const dispatch = useDispatch();
 
-  const { activeConversation, messages } = useSelector((state) => state.chat);
+  const { activeConversation } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
 
   const values = {
