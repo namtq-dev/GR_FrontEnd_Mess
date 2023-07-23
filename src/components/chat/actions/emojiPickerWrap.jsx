@@ -3,7 +3,7 @@ import EmojiPicker from 'emoji-picker-react';
 
 export default function EmojiPickerWrap() {
   return (
-    <li>
+    <li className="w-full">
       <button className="btn" type="button">
         <EmojiIcon className="dark:fill-dark_svg_1" />
       </button>
