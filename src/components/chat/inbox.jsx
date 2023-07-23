@@ -3,6 +3,7 @@ import ChatHeader from './chatHeader';
 import ChatMessages from './messages/chatMessages';
 import { useEffect } from 'react';
 import { getMessages } from '../../reducers/features/chatSlice';
+import { ChatActions } from './actions';
 
 export default function Inbox() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function Inbox() {
       <div>
         <ChatHeader />
         <ChatMessages />
+        <ChatActions />
       </div>
     </div>
   );
