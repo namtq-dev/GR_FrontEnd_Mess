@@ -14,6 +14,8 @@ export default function ChatActions() {
   const { user } = useSelector((state) => state.user);
 
   const [message, setMessage] = useState('');
+  const [showAttachmentsMenu, setShowAttachmentsMenu] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
 
   const textRef = useRef();
 
@@ -39,9 +41,16 @@ export default function ChatActions() {
           <EmojiPickerWrap
             message={message}
             setMessage={setMessage}
+            showPicker={showPicker}
+            setShowPicker={setShowPicker}
+            setShowAttachmentsMenu={setShowAttachmentsMenu}
             textRef={textRef}
           />
-          <Attachments />
+          <Attachments
+            showAttachmentsMenu={showAttachmentsMenu}
+            setShowAttachmentsMenu={setShowAttachmentsMenu}
+            setShowPicker={setShowPicker}
+          />
         </ul>
         <Input message={message} setMessage={setMessage} textRef={textRef} />
         <button type="submit" className="btn">
