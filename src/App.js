@@ -1,3 +1,4 @@
+import { io } from 'socket.io-client';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,6 +9,9 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Register from './pages/register';
 import { useSelector } from 'react-redux';
+
+// Socker io
+const socket = io(process.env.REACT_APP_BACKEND_URL);
 
 function App() {
   const { user } = useSelector((state) => state.user);
