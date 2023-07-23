@@ -1,11 +1,25 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { dateHandler } from '../../../helpers/date';
+import { createOrOpenConversation } from '../../../reducers/features/chatSlice';
+import { getReceiverId } from '../../../helpers/conversation';
 
 export default function Conversation({ conver }) {
+  const dispatch = useDispatch();
+
   const { activeConversation } = useSelector((state) => state.chat);
+  const { user } = useSelector((state) => state.user);
+
+  const values = {
+    receiverId: getReceiverId(user._id, conver.users),
+    loginToken: user.loginToken,
+  };
+  const openConversation = () => {
+    dispatch(createOrOpenConversation(values));
+  };
 
   return (
     <li
+      onClick={openConversation}
       className="list-none h-[72px] w-full dark:bg-dark_bg_1 hover:dark:bg-dark_bg_2
       cursor-pointer dark:text-dark_text_1 px-[10px]"
     >

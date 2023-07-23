@@ -1,7 +1,24 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrOpenConversation } from '../../../reducers/features/chatSlice';
+
 export default function Contact({ contact }) {
-  console.log(contact);
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.user);
+  const { activeConversation } = useSelector((state) => state.chat);
+
+  const values = {
+    receiverId: contact._id,
+    loginToken: user.loginToken,
+  };
+  const openConversation = () => {
+    dispatch(createOrOpenConversation(values));
+  };
+
+  console.log('conver', activeConversation);
   return (
     <li
+      onClick={openConversation}
       className="list-none h-[72px] hover:dark:bg-dark_bg_2 cursor-pointer 
     dark:text-dark_text_1 px-[10px]"
     >
