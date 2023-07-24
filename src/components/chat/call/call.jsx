@@ -1,5 +1,6 @@
 import Header from './header';
 import Ringing from './ringing';
+import VideoArea from './videoArea';
 
 export default function Call({ call, setCall, callAccepted }) {
   const { incomingCall, callEnded } = call;
@@ -14,6 +15,7 @@ export default function Call({ call, setCall, callAccepted }) {
       <div>
         <div>
           <Header />
+          <VideoArea name="Quang Viet" />
         </div>
       </div>
       {/* Call popup */}
