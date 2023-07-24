@@ -7,6 +7,12 @@ import {
 } from '../reducers/features/chatSlice';
 import { Inbox, MainHome } from '../components/chat';
 import SocketContext from '../context/socketContext';
+import Call from '../components/chat/call/call';
+
+const callInfos = {
+  incomingCall: true,
+  callEnded: false,
+};
 
 function Home({ socket }) {
   const dispatch = useDispatch();
@@ -16,6 +22,8 @@ function Home({ socket }) {
 
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [typing, setTyping] = useState('');
+  const [call, setCall] = useState(callInfos);
+  const [callAccepted, setCallAccepted] = useState(false);
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -44,16 +52,19 @@ function Home({ socket }) {
   }, []);
 
   return (
-    <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
-      <div className="container h-screen flex py-[19px]">
-        <Sidebar onlineUsers={onlineUsers} typing={typing} />
-        {activeConversation._id ? (
-          <Inbox onlineUsers={onlineUsers} typing={typing} />
-        ) : (
-          <MainHome />
-        )}
+    <>
+      <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
+        <div className="container h-screen flex py-[19px]">
+          <Sidebar onlineUsers={onlineUsers} typing={typing} />
+          {activeConversation._id ? (
+            <Inbox onlineUsers={onlineUsers} typing={typing} />
+          ) : (
+            <MainHome />
+          )}
+        </div>
       </div>
-    </div>
+      <Call call={call} setCall={setCall} callAccepted={callAccepted} />
+    </>
   );
 }
 
