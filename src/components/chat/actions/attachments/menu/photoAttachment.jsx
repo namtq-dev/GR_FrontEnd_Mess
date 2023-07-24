@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { PhotoIcon } from '../../../../../svg';
 import { addFiles } from '../../../../../reducers/features/chatSlice';
+import { getFileType } from '../../../../../helpers/file';
 
 export default function PhotoAttachment() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export default function PhotoAttachment() {
             addFiles({
               file: file,
               fileData: readerEvent.target.result,
-              type: 'image',
+              type: getFileType(file.type),
             })
           );
         };
