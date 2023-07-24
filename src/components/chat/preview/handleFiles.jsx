@@ -1,4 +1,6 @@
 import { useSelector } from 'react-redux';
+import AddNewFiles from './addNewFiles';
+import { SendIcon } from '../../../svg';
 
 export default function HandleFiles({ activeIndex, setActiveIndex }) {
   const { files } = useSelector((state) => state.chat);
@@ -30,6 +32,10 @@ export default function HandleFiles({ activeIndex, setActiveIndex }) {
             )}
           </div>
         ))}
+        <AddNewFiles setActiveIndex={setActiveIndex} />
+      </div>
+      <div className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer">
+        <SendIcon className="fill-white" />
       </div>
     </div>
   );
