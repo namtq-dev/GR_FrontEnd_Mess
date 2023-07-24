@@ -9,6 +9,7 @@ import {
 } from '../../../reducers/features/chatSlice';
 import SocketContext from '../../../context/socketContext';
 import { DotLoader } from 'react-spinners';
+import VideoThumbnail from 'react-video-thumbnail';
 
 function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
   const dispatch = useDispatch();
@@ -60,6 +61,8 @@ function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
                 alt=""
                 className="w-full h-full object-cover"
               />
+            ) : file.type === 'VIDEO' ? (
+              <VideoThumbnail videoUrl={file.fileData} />
             ) : (
               <img
                 src={`../../../images/file/${file.type}.png`}
