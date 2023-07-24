@@ -5,11 +5,12 @@ import { useEffect } from 'react';
 import { getMessages } from '../../reducers/features/chatSlice';
 import { ChatActions } from './actions';
 import { checkOnlineStatus } from '../../helpers/conversation';
+import FilesPreview from './preview/filesPreview';
 
 export default function Inbox({ onlineUsers, typing }) {
   const dispatch = useDispatch();
 
-  const { activeConversation } = useSelector((state) => state.chat);
+  const { activeConversation, files } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
 
   const values = {
@@ -32,8 +33,14 @@ export default function Inbox({ onlineUsers, typing }) {
             activeConversation.users
           )}
         />
-        <ChatMessages typing={typing} />
-        <ChatActions />
+        {files.length > 0 ? (
+          <FilesPreview />
+        ) : (
+          <>
+            <ChatMessages typing={typing} />
+            <ChatActions />
+          </>
+        )}
       </div>
     </div>
   );
