@@ -6,7 +6,7 @@ import { getMessages } from '../../reducers/features/chatSlice';
 import { ChatActions } from './actions';
 import { checkOnlineStatus } from '../../helpers/conversation';
 
-export default function Inbox({ onlineUsers }) {
+export default function Inbox({ onlineUsers, typing }) {
   const dispatch = useDispatch();
 
   const { activeConversation } = useSelector((state) => state.chat);
@@ -32,7 +32,7 @@ export default function Inbox({ onlineUsers }) {
             activeConversation.users
           )}
         />
-        <ChatMessages />
+        <ChatMessages typing={typing} />
         <ChatActions />
       </div>
     </div>

@@ -15,6 +15,7 @@ function Home({ socket }) {
   const { activeConversation } = useSelector((state) => state.chat);
 
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [typing, setTyping] = useState('');
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -31,19 +32,23 @@ function Home({ socket }) {
     }
   }, [user]);
 
-  // socket to receive new messages
   useEffect(() => {
+    // socket to receive new messages
     socket.on('receive message', (message) => {
       dispatch(updateIncomingMessages(message));
     });
+
+    // socket to receive typing status
+    socket.on('typing', (conversationId) => setTyping(conversationId));
+    socket.on('stop typing', () => setTyping(''));
   }, []);
 
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
       <div className="container h-screen flex py-[19px]">
-        <Sidebar onlineUsers={onlineUsers} />
+        <Sidebar onlineUsers={onlineUsers} typing={typing} />
         {activeConversation._id ? (
-          <Inbox onlineUsers={onlineUsers} />
+          <Inbox onlineUsers={onlineUsers} typing={typing} />
         ) : (
           <MainHome />
         )}

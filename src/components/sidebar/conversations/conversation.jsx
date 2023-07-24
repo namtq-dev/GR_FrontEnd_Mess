@@ -8,7 +8,7 @@ import {
 } from '../../../helpers/conversation';
 import SocketContext from '../../../context/socketContext';
 
-function Conversation({ conver, online, socket }) {
+function Conversation({ conver, online, typing, socket }) {
   const dispatch = useDispatch();
 
   const { activeConversation } = useSelector((state) => state.chat);
@@ -53,11 +53,15 @@ function Conversation({ conver, online, socket }) {
             <div>
               <div className="flex items-center gap-x-1 dark:text-dark_text_2">
                 <div className="flex-1 items-center gap-x-1 dark:text-dark_text_2">
-                  <p>
-                    {conver.latestMessage?.message.length > 25
-                      ? conver.latestMessage?.message.substring(0, 25) + '...'
-                      : conver.latestMessage?.message}
-                  </p>
+                  {typing === conver._id ? (
+                    <p className="text-green_1">Typing...</p>
+                  ) : (
+                    <p>
+                      {conver.latestMessage?.message.length > 25
+                        ? conver.latestMessage?.message.substring(0, 25) + '...'
+                        : conver.latestMessage?.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
