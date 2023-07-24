@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Sidebar } from '../components/sidebar';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -24,6 +24,10 @@ function Home({ socket }) {
   const [typing, setTyping] = useState('');
   const [call, setCall] = useState(callInfos);
   const [callAccepted, setCallAccepted] = useState(false);
+  const [stream, setStream] = useState();
+
+  const myVideo = useRef();
+  const yourVideo = useRef();
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -63,7 +67,14 @@ function Home({ socket }) {
           )}
         </div>
       </div>
-      <Call call={call} setCall={setCall} callAccepted={callAccepted} />
+      <Call
+        call={call}
+        setCall={setCall}
+        callAccepted={callAccepted}
+        myVideo={myVideo}
+        yourVideo={yourVideo}
+        stream={stream}
+      />
     </>
   );
 }
