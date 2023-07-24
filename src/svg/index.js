@@ -28,8 +28,14 @@ import NoVideoIcon from './NoVideo';
 import DownloadIcon from './Download';
 import ValidIcon from './Valid';
 import AddContactIcon from './AddConntact';
+import SpeakerIcon from './Speaker';
+import VideoDialIcon from './VideoDial';
+import DialIcon from './Dial';
 
 export {
+  SpeakerIcon,
+  VideoDialIcon,
+  DialIcon,
   AddContactIcon,
   ValidIcon,
   DownloadIcon,
