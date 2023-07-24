@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CallActions from './callActions';
 import Header from './header';
 import Ringing from './ringing';
-import VideoArea from './videoArea';
+import CallInfo from './callInfo';
 
 export default function Call({ call, setCall, callAccepted }) {
   const { incomingCall, callEnded } = call;
@@ -19,7 +19,7 @@ export default function Call({ call, setCall, callAccepted }) {
       <div>
         <div>
           <Header />
-          <VideoArea name="Quang Viet" />
+          <CallInfo name="Quang Viet" />
           {showCallActions ? <CallActions /> : null}
         </div>
       </div>

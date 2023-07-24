@@ -1,4 +1,4 @@
-export default function VideoArea({ name }) {
+export default function CallInfo({ name }) {
   return (
     <div className="absolute top-12 z-40 w-full p-1">
       <div className="flex flex-col items-center">
