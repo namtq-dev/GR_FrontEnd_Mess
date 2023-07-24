@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { Sidebar } from '../components/sidebar';
 import { useDispatch, useSelector } from 'react-redux';
-import { getConversations } from '../reducers/features/chatSlice';
+import {
+  getConversations,
+  updateIncomingMessages,
+} from '../reducers/features/chatSlice';
 import { Inbox, MainHome } from '../components/chat';
 import SocketContext from '../context/socketContext';
 
@@ -18,6 +21,13 @@ function Home({ socket }) {
       dispatch(getConversations(user.loginToken));
     }
   }, [user]);
+
+  // socket to receive new messages
+  useEffect(() => {
+    socket.on('receive message', (message) => {
+      dispatch(updateIncomingMessages(message));
+    });
+  }, []);
 
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">

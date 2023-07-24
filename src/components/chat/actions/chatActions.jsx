@@ -6,8 +6,9 @@ import { sendMessage } from '../../../reducers/features/chatSlice';
 import { DotLoader } from 'react-spinners';
 import EmojiPickerWrap from './emojiPickerWrap';
 import { Attachments } from './attachments';
+import SocketContext from '../../../context/socketContext';
 
-export default function ChatActions() {
+function ChatActions({ socket }) {
   const dispatch = useDispatch();
 
   const { activeConversation, status } = useSelector((state) => state.chat);
@@ -29,7 +30,8 @@ export default function ChatActions() {
   const sendMessageHandler = async (eve) => {
     eve.preventDefault();
     setSendMessLoading(true);
-    await dispatch(sendMessage(values));
+    let newMsg = await dispatch(sendMessage(values));
+    socket.emit('send message', newMsg.payload);
     setMessage('');
     setSendMessLoading(false);
   };
@@ -67,3 +69,11 @@ export default function ChatActions() {
     </form>
   );
 }
+
+const ChatActionsWithSocket = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <ChatActions {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+
+export default ChatActionsWithSocket;
