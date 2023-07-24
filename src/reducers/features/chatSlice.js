@@ -106,10 +106,22 @@ export const chatSlice = createSlice({
       state.activeConversation = action.payload;
     },
     updateIncomingMessages: (state, action) => {
+      // update received message
       let conver = state.activeConversation;
       if (conver._id === action.payload.conversation._id) {
         state.messages = [...state.messages, action.payload];
       }
+
+      // update conversation in side bar
+      let newestConversation = {
+        ...action.payload.conversation,
+        latestMessage: action.payload,
+      };
+      let newConvers = [...state.conversations].filter(
+        (conver) => conver._id !== newestConversation._id
+      );
+      newConvers.unshift(newestConversation);
+      state.conversations = newConvers;
     },
   },
   extraReducers(builder) {
