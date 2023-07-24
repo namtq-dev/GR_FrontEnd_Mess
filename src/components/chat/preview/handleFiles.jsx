@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import AddNewFiles from './addNewFiles';
-import { SendIcon } from '../../../svg';
+import { CloseIcon, SendIcon } from '../../../svg';
 import { uploadFiles } from '../../../helpers/file';
 import { useState } from 'react';
-import { sendMessage } from '../../../reducers/features/chatSlice';
+import {
+  removeFileFromPreview,
+  sendMessage,
+} from '../../../reducers/features/chatSlice';
 import SocketContext from '../../../context/socketContext';
 import { DotLoader } from 'react-spinners';
 
@@ -35,6 +38,10 @@ function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
     setLoading(false);
   };
 
+  const handleRemoveFile = (index) => {
+    dispatch(removeFileFromPreview(index));
+  };
+
   return (
     <div className="w-[97%] flex items-center justify-between mt-2 border-t dark:border-dark_border_2">
       <span></span>
@@ -60,6 +67,13 @@ function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
                 className="w-8 h-10 mt-1.5 ml-2.5"
               />
             )}
+            {/* Remove file */}
+            <div
+              className="removeFileIcon hidden"
+              onClick={() => handleRemoveFile(i)}
+            >
+              <CloseIcon className="dark:fill-white absolute right-0 top-0 w-4 h-4" />
+            </div>
           </div>
         ))}
         <AddNewFiles setActiveIndex={setActiveIndex} />
