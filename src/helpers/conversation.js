@@ -11,3 +11,12 @@ export const getReceiverName = (myId, users) => {
 export const getReceiverPicture = (myId, users) => {
   return users[0]._id === myId ? users[1].picture : users[0].picture;
 };
+
+export const checkOnlineStatus = (onlineUsers, myId, users) => {
+  const receiverId = getReceiverId(myId, users);
+  const checkOnline = onlineUsers.find(
+    (onlineUser) => onlineUser.userId === receiverId
+  );
+
+  return checkOnline?.userId ? true : false;
+};

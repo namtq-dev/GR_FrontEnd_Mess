@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { DotsIcon, SearchLargeIcon } from '../../svg';
 
-export default function ChatHeader() {
+export default function ChatHeader({ online }) {
   const { activeConversation } = useSelector((state) => state.chat);
 
   return (
@@ -19,7 +19,9 @@ export default function ChatHeader() {
             <h1 className="dark:text-white text-md font-bold">
               {activeConversation.name}
             </h1>
-            <span className="text-xs dark:text-dark_svg_2">online</span>
+            <span className="text-xs dark:text-dark_svg_2">
+              {online ? 'online' : 'offline'}
+            </span>
           </div>
         </div>
         <ul className="flex items-center gap-x-2.5">

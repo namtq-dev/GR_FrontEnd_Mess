@@ -4,8 +4,9 @@ import ChatMessages from './messages/chatMessages';
 import { useEffect } from 'react';
 import { getMessages } from '../../reducers/features/chatSlice';
 import { ChatActions } from './actions';
+import { checkOnlineStatus } from '../../helpers/conversation';
 
-export default function Inbox() {
+export default function Inbox({ onlineUsers }) {
   const dispatch = useDispatch();
 
   const { activeConversation } = useSelector((state) => state.chat);
@@ -24,7 +25,13 @@ export default function Inbox() {
   return (
     <div className="relative w-full h-full border-l dark:border-l-dark_border_2 select-none overflow-hidden ">
       <div>
-        <ChatHeader />
+        <ChatHeader
+          online={checkOnlineStatus(
+            onlineUsers,
+            user.id,
+            activeConversation.users
+          )}
+        />
         <ChatMessages />
         <ChatActions />
       </div>

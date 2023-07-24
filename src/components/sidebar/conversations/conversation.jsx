@@ -8,7 +8,7 @@ import {
 } from '../../../helpers/conversation';
 import SocketContext from '../../../context/socketContext';
 
-function Conversation({ conver, socket }) {
+function Conversation({ conver, online, socket }) {
   const dispatch = useDispatch();
 
   const { activeConversation } = useSelector((state) => state.chat);
@@ -35,7 +35,11 @@ function Conversation({ conver, socket }) {
       <div className="relative w-full flex items-center justify-between py-[10px]">
         {/* Left side */}
         <div className="flex items-center gap-x-3">
-          <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
+          <div
+            className={`relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden ${
+              online ? 'online' : ''
+            } `}
+          >
             <img
               src={getReceiverPicture(user.id, conver.users)}
               alt="conversation picture"

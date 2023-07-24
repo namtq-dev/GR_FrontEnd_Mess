@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Sidebar } from '../components/sidebar';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,10 +14,19 @@ function Home({ socket }) {
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
 
-  // get all conversations
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
   useEffect(() => {
     if (user?.loginToken) {
+      // send online status to BE
       socket.emit('online', user.id);
+
+      // get online users list
+      socket.on('online users list', (usersList) => {
+        setOnlineUsers(usersList);
+      });
+
+      // get all conversations
       dispatch(getConversations(user.loginToken));
     }
   }, [user]);
@@ -32,8 +41,12 @@ function Home({ socket }) {
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
       <div className="container h-screen flex py-[19px]">
-        <Sidebar />
-        {activeConversation._id ? <Inbox /> : <MainHome />}
+        <Sidebar onlineUsers={onlineUsers} />
+        {activeConversation._id ? (
+          <Inbox onlineUsers={onlineUsers} />
+        ) : (
+          <MainHome />
+        )}
       </div>
     </div>
   );
