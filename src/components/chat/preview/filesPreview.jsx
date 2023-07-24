@@ -18,6 +18,7 @@ export default function FilesPreview() {
           <HandleFiles
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
+            message={message}
           />
         </div>
       </div>
