@@ -49,6 +49,12 @@
   .fileThumbnail:hover .removeFileIcon {
     display: block;
   }
+  .callbg {
+    background-image: linear-gradient(black, black),
+      url(https://res.cloudinary.com/djccswary/image/upload/v1690216686/postBgs/whatsapp-chat-background-upt218t7uwyuhvd8_l8mrjm.jpg);
+    background-size: cover;
+    background-blend-mode: saturation;
+  }
 }
 
 /* Animations */

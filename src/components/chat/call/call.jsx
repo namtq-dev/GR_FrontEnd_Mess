@@ -1,3 +1,4 @@
+import Header from './header';
 import Ringing from './ringing';
 
 export default function Call({ call, setCall, callAccepted }) {
@@ -6,7 +7,16 @@ export default function Call({ call, setCall, callAccepted }) {
   console.log(incomingCall, callAccepted);
 
   return (
-    <div>
+    <div
+      className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                  w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg`}
+    >
+      <div>
+        <div>
+          <Header />
+        </div>
+      </div>
+      {/* Call popup */}
       {incomingCall && !callAccepted && (
         <Ringing call={call} setCall={setCall} />
       )}
