@@ -26,8 +26,10 @@ import CallIcon from './Call';
 import MuteIcon from './Mute';
 import NoVideoIcon from './NoVideo';
 import DownloadIcon from './Download';
+import ValidIcon from './Valid';
 
 export {
+  ValidIcon,
   DownloadIcon,
   CommunityIcon,
   StoryIcon,
