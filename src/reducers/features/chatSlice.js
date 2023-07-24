@@ -184,6 +184,7 @@ export const chatSlice = createSlice({
         );
         newConvers.unshift(newestConversation);
         state.conversations = newConvers;
+        state.files = [];
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.status = 'fail';

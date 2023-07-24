@@ -5,6 +5,7 @@ import { uploadFiles } from '../../../helpers/file';
 import { useState } from 'react';
 import { sendMessage } from '../../../reducers/features/chatSlice';
 import SocketContext from '../../../context/socketContext';
+import { DotLoader } from 'react-spinners';
 
 function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
   const dispatch = useDispatch();
@@ -67,7 +68,11 @@ function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
         onClick={(eve) => sendFilesHandler(eve)}
         className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer"
       >
-        <SendIcon className="fill-white" />
+        {loading ? (
+          <DotLoader color="#e9edef" size={25} speedMultiplier={3} />
+        ) : (
+          <SendIcon className="fill-white" />
+        )}
       </div>
     </div>
   );
