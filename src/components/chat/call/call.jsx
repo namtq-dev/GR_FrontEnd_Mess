@@ -12,45 +12,49 @@ export default function Call({
   yourVideo,
   stream,
 }) {
-  const { incomingCall, callEnded } = call;
+  const { incomingCall, callEnded, name } = call;
 
   const [showCallActions, setSHowCallActions] = useState(false);
 
   return (
-    <div
-      className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                  w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg`}
-      onMouseOver={() => setSHowCallActions(true)}
-      onMouseOut={() => setSHowCallActions(false)}
-    >
-      <div>
+    <>
+      <div
+        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                    w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg
+                    ${incomingCall && !callAccepted ? 'hidden' : ''}
+                    `}
+        onMouseOver={() => setSHowCallActions(true)}
+        onMouseOut={() => setSHowCallActions(false)}
+      >
         <div>
-          <Header />
-          <CallInfo name="Quang Viet" />
-          {showCallActions ? <CallActions /> : null}
-        </div>
-        <div>
-          {/* Your video */}
           <div>
-            <video
-              ref={yourVideo}
-              playsInline
-              muted
-              autoPlay
-              className="largeVideoCall "
-            ></video>
+            <Header />
+            <CallInfo name={name} />
+            {showCallActions ? <CallActions /> : null}
           </div>
-          {/* My video */}
           <div>
-            <video
-              ref={myVideo}
-              playsInline
-              muted
-              autoPlay
-              className={`smallVideoCall ${
-                showCallActions ? 'moveVideoCall' : ''
-              }`}
-            ></video>
+            {/* Your video */}
+            <div>
+              <video
+                ref={yourVideo}
+                playsInline
+                muted
+                autoPlay
+                className="largeVideoCall "
+              ></video>
+            </div>
+            {/* My video */}
+            <div>
+              <video
+                ref={myVideo}
+                playsInline
+                muted
+                autoPlay
+                className={`smallVideoCall ${
+                  showCallActions ? 'moveVideoCall' : ''
+                }`}
+              ></video>
+            </div>
           </div>
         </div>
       </div>
@@ -59,6 +63,6 @@ export default function Call({
       {incomingCall && !callAccepted && (
         <Ringing call={call} setCall={setCall} />
       )}
-    </div>
+    </>
   );
 }

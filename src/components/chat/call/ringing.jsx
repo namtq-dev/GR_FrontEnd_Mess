@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { CloseIcon, ValidIcon } from '../../../svg';
 
 export default function Ringing({ call, setCall }) {
-  const { incomingCall, callEnded } = call;
+  const { incomingCall, callEnded, name, picture } = call;
 
   const [timer, setTimer] = useState(0);
 
@@ -32,13 +32,13 @@ export default function Ringing({ call, setCall }) {
         {/* Call infos */}
         <div className="flex items-center gap-x-2">
           <img
-            src="https://res.cloudinary.com/djccswary/image/upload/v1690083219/ys0auoyq6fa9bz4y5vbk.jpg"
+            src={picture}
             alt={`caller profile picture`}
             className="w-28 h-28 rounded-full"
           />
           <div>
             <h3 className="dark:text-white">
-              <b>Nam Quang</b>
+              <b>{name}</b>
             </h3>
             <span className="dark:text-dark_text_2">Video Call...</span>
           </div>
