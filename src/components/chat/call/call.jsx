@@ -13,6 +13,7 @@ export default function Call({
   stream,
   answerCall,
   showVideoCall,
+  endCall,
 }) {
   const { incomingCall, callEnded, name } = call;
 
@@ -33,7 +34,7 @@ export default function Call({
           <div>
             <Header />
             <CallInfo name={name} />
-            {showCallActions ? <CallActions /> : null}
+            {showCallActions ? <CallActions endCall={endCall} /> : null}
           </div>
           <div>
             {/* Your video */}
@@ -70,7 +71,12 @@ export default function Call({
 
       {/* Call popup */}
       {incomingCall && !callAccepted && (
-        <Ringing call={call} setCall={setCall} answerCall={answerCall} />
+        <Ringing
+          call={call}
+          setCall={setCall}
+          answerCall={answerCall}
+          endCall={endCall}
+        />
       )}
 
       {/* Call ringtone */}

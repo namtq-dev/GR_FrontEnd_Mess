@@ -16,7 +16,8 @@ import {
 } from '../helpers/conversation';
 
 const callInfos = {
-  socketId: '',
+  mySocketId: '',
+  yourSocketId: '',
   incomingCall: false,
   callEnded: false,
   name: '',
@@ -41,7 +42,7 @@ function Home({ socket }) {
   const yourVideo = useRef();
   const connectionRef = useRef();
 
-  const { socketId } = call;
+  const { mySocketId, yourSocketId } = call;
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -73,19 +74,32 @@ function Home({ socket }) {
   useEffect(() => {
     setupMedia();
     socket.on('setup socket', (socketId) => {
-      setCall({ ...call, socketId });
+      setCall({ ...call, mySocketId: socketId });
     });
 
     // receive incoming call
     socket.on('incoming call', (data) => {
+      console.log('incoming call');
+
       setCall({
         ...call,
-        socketId: data.from,
+        yourSocketId: data.from,
         name: data.name,
         picture: data.picture,
         signal: data.signal,
         incomingCall: true,
       });
+    });
+
+    socket.on('call ended', () => {
+      console.log('call ended');
+
+      setShowVideoCall(false);
+      setCall({ ...call, callEnded: true, incomingCall: false });
+      myVideo.current.srcObject = null;
+      if (callAccepted) {
+        connectionRef?.current?.destroy();
+      }
     });
   }, []);
 
@@ -109,7 +123,7 @@ function Home({ socket }) {
       socket.emit('call user', {
         userToCall: getReceiverId(user.id, activeConversation.users),
         signal: data,
-        from: socketId,
+        from: mySocketId,
         myName: `${user.firstName} ${user.lastName}`,
         myPicture: user.picture,
       });
@@ -120,6 +134,8 @@ function Home({ socket }) {
     });
 
     socket.on('call accepted', (signal) => {
+      console.log('call accepted');
+
       setCallAccepted(true);
       peer.signal(signal); // connect with other user's signal
     });
@@ -138,7 +154,7 @@ function Home({ socket }) {
     });
 
     peer.on('signal', (data) => {
-      socket.emit('answer call', { signal: data, to: call.socketId });
+      socket.emit('answer call', { signal: data, to: call.yourSocketId });
     });
 
     peer.on('stream', (stream) => {
@@ -147,6 +163,16 @@ function Home({ socket }) {
 
     peer.signal(call.signal); // connect with other user's signal
     connectionRef.current = peer;
+  };
+
+  const endCall = () => {
+    console.log('i end this call');
+
+    setShowVideoCall(false);
+    setCall({ ...call, callEnded: true, incomingCall: false });
+    myVideo.current.srcObject = null;
+    socket.emit('end call', call.yourSocketId);
+    connectionRef?.current?.destroy();
   };
 
   const setupMedia = () => {
@@ -162,6 +188,8 @@ function Home({ socket }) {
     setShowVideoCall(true);
   };
   // video call socket and fuctions
+
+  console.log('my socket id: ', call.mySocketId);
 
   return (
     <>
@@ -193,6 +221,7 @@ function Home({ socket }) {
           stream={stream}
           answerCall={answerCall}
           showVideoCall={showVideoCall}
+          endCall={endCall}
         />
       </div>
     </>
