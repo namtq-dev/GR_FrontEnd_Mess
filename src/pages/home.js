@@ -16,8 +16,7 @@ import {
 } from '../helpers/conversation';
 
 const callInfos = {
-  mySocketId: '',
-  yourSocketId: '',
+  socketId: '',
   incomingCall: false,
   callEnded: false,
   name: '',
@@ -42,7 +41,7 @@ function Home({ socket }) {
   const yourVideo = useRef();
   const connectionRef = useRef();
 
-  const { mySocketId, yourSocketId } = call;
+  const { socketId } = call;
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -74,7 +73,7 @@ function Home({ socket }) {
   useEffect(() => {
     setupMedia();
     socket.on('setup socket', (socketId) => {
-      setCall({ ...call, mySocketId: socketId });
+      setCall({ ...call, socketId: socketId });
     });
 
     // receive incoming call
@@ -83,7 +82,7 @@ function Home({ socket }) {
 
       setCall({
         ...call,
-        yourSocketId: data.from,
+        socketId: data.from,
         name: data.name,
         picture: data.picture,
         signal: data.signal,
@@ -123,7 +122,7 @@ function Home({ socket }) {
       socket.emit('call user', {
         userToCall: getReceiverId(user.id, activeConversation.users),
         signal: data,
-        from: mySocketId,
+        from: socketId,
         myName: `${user.firstName} ${user.lastName}`,
         myPicture: user.picture,
       });
@@ -154,7 +153,7 @@ function Home({ socket }) {
     });
 
     peer.on('signal', (data) => {
-      socket.emit('answer call', { signal: data, to: call.yourSocketId });
+      socket.emit('answer call', { signal: data, to: call.socketId });
     });
 
     peer.on('stream', (stream) => {
@@ -171,7 +170,7 @@ function Home({ socket }) {
     setShowVideoCall(false);
     setCall({ ...call, callEnded: true, incomingCall: false });
     myVideo.current.srcObject = null;
-    socket.emit('end call', call.yourSocketId);
+    socket.emit('end call', call.socketId);
     connectionRef?.current?.destroy();
   };
 
@@ -189,7 +188,7 @@ function Home({ socket }) {
   };
   // video call socket and fuctions
 
-  console.log('my socket id: ', call.mySocketId);
+  console.log('socket id: ', call.socketId);
 
   return (
     <>
