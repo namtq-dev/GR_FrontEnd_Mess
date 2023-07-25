@@ -73,12 +73,13 @@ function Home({ socket }) {
   useEffect(() => {
     setupMedia();
     socket.on('setup socket', (socketId) => {
+      console.log('setup socket - my id: ', socketId);
       setCall({ ...call, socketId: socketId });
     });
 
     // receive incoming call
     socket.on('incoming call', (data) => {
-      console.log('incoming call');
+      console.log('incoming call from: ', data.from);
 
       setCall({
         ...call,
@@ -119,6 +120,8 @@ function Home({ socket }) {
 
     // inform other user that i'm calling
     peer.on('signal', (data) => {
+      console.log('make a call to other user, my socket id: ', socketId);
+
       socket.emit('call user', {
         userToCall: getReceiverId(user.id, activeConversation.users),
         signal: data,
@@ -153,6 +156,7 @@ function Home({ socket }) {
     });
 
     peer.on('signal', (data) => {
+      console.log('answer a call from: ', call.socketId);
       socket.emit('answer call', { signal: data, to: call.socketId });
     });
 
@@ -187,8 +191,6 @@ function Home({ socket }) {
     setShowVideoCall(true);
   };
   // video call socket and fuctions
-
-  console.log('socket id: ', call.socketId);
 
   return (
     <>
