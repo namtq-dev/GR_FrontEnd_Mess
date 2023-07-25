@@ -16,6 +16,7 @@ export default function Call({
   const { incomingCall, callEnded, name } = call;
 
   const [showCallActions, setSHowCallActions] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   return (
     <>
@@ -42,7 +43,8 @@ export default function Call({
                   playsInline
                   muted
                   autoPlay
-                  className="largeVideoCall "
+                  className={toggle ? 'smallVideoCall' : 'largeVideoCall '}
+                  onClick={() => setToggle((prev) => !prev)}
                 ></video>
               </div>
             ) : null}
@@ -54,9 +56,10 @@ export default function Call({
                   playsInline
                   muted
                   autoPlay
-                  className={`smallVideoCall ${
+                  className={`${toggle ? 'largeVideoCall' : 'smallVideoCall'} ${
                     showCallActions ? 'moveVideoCall' : ''
                   }`}
+                  onClick={() => setToggle((prev) => !prev)}
                 ></video>
               </div>
             ) : null}
