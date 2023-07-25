@@ -31,8 +31,10 @@ import AddContactIcon from './AddConntact';
 import SpeakerIcon from './Speaker';
 import VideoDialIcon from './VideoDial';
 import DialIcon from './Dial';
+import VideoCallIcon from './VideoCall';
 
 export {
+  VideoCallIcon,
   SpeakerIcon,
   VideoDialIcon,
   DialIcon,

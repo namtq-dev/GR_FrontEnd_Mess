@@ -7,7 +7,7 @@ import { ChatActions } from './actions';
 import { checkOnlineStatus } from '../../helpers/conversation';
 import FilesPreview from './preview/filesPreview';
 
-export default function Inbox({ onlineUsers, typing }) {
+export default function Inbox({ onlineUsers, typing, callUser }) {
   const dispatch = useDispatch();
 
   const { activeConversation, files } = useSelector((state) => state.chat);
@@ -32,6 +32,7 @@ export default function Inbox({ onlineUsers, typing }) {
             user.id,
             activeConversation.users
           )}
+          callUser={callUser}
         />
         {files.length > 0 ? (
           <FilesPreview />
