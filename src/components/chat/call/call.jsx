@@ -11,6 +11,7 @@ export default function Call({
   myVideo,
   yourVideo,
   stream,
+  answerCall,
 }) {
   const { incomingCall, callEnded, name } = call;
 
@@ -34,34 +35,38 @@ export default function Call({
           </div>
           <div>
             {/* Your video */}
-            <div>
-              <video
-                ref={yourVideo}
-                playsInline
-                muted
-                autoPlay
-                className="largeVideoCall "
-              ></video>
-            </div>
+            {callAccepted && !callEnded ? (
+              <div>
+                <video
+                  ref={yourVideo}
+                  playsInline
+                  muted
+                  autoPlay
+                  className="largeVideoCall "
+                ></video>
+              </div>
+            ) : null}
             {/* My video */}
-            <div>
-              <video
-                ref={myVideo}
-                playsInline
-                muted
-                autoPlay
-                className={`smallVideoCall ${
-                  showCallActions ? 'moveVideoCall' : ''
-                }`}
-              ></video>
-            </div>
+            {stream ? (
+              <div>
+                <video
+                  ref={myVideo}
+                  playsInline
+                  muted
+                  autoPlay
+                  className={`smallVideoCall ${
+                    showCallActions ? 'moveVideoCall' : ''
+                  }`}
+                ></video>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
 
       {/* Call popup */}
       {incomingCall && !callAccepted && (
-        <Ringing call={call} setCall={setCall} />
+        <Ringing call={call} setCall={setCall} answerCall={answerCall} />
       )}
     </>
   );

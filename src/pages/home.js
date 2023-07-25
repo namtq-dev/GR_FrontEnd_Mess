@@ -21,6 +21,7 @@ const callInfos = {
   callEnded: false,
   name: '',
   picture: '',
+  signal: '',
 };
 
 function Home({ socket }) {
@@ -34,9 +35,11 @@ function Home({ socket }) {
   const [call, setCall] = useState(callInfos);
   const [callAccepted, setCallAccepted] = useState(false);
   const [stream, setStream] = useState(); // for video and audio stream
+  const [showVideoCall, setShowVideoCall] = useState(false);
 
   const myVideo = useRef();
   const yourVideo = useRef();
+  const connectionRef = useRef();
 
   const { socketId } = call;
 
@@ -111,6 +114,39 @@ function Home({ socket }) {
         myPicture: user.picture,
       });
     });
+
+    peer.on('stream', (stream) => {
+      yourVideo.current.srcObject = stream;
+    });
+
+    socket.on('call accepted', (signal) => {
+      setCallAccepted(true);
+      peer.signal(signal); // connect with other user's signal
+    });
+
+    connectionRef.current = peer;
+  };
+
+  const answerCall = () => {
+    enableMedia();
+    setCallAccepted(true);
+
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream,
+    });
+
+    peer.on('signal', (data) => {
+      socket.emit('answer call', { signal: data, to: call.socketId });
+    });
+
+    peer.on('stream', (stream) => {
+      yourVideo.current.srcObject = stream;
+    });
+
+    peer.signal(call.signal); // connect with other user's signal
+    connectionRef.current = peer;
   };
 
   const setupMedia = () => {
@@ -123,6 +159,7 @@ function Home({ socket }) {
 
   const enableMedia = () => {
     myVideo.current.srcObject = stream;
+    setShowVideoCall(true);
   };
   // video call socket and fuctions
 
@@ -142,14 +179,21 @@ function Home({ socket }) {
           )}
         </div>
       </div>
-      <Call
-        call={call}
-        setCall={setCall}
-        callAccepted={callAccepted}
-        myVideo={myVideo}
-        yourVideo={yourVideo}
-        stream={stream}
-      />
+      <div
+        className={
+          (showVideoCall || call.signal) && !call.callEnded ? '' : 'hidden'
+        }
+      >
+        <Call
+          call={call}
+          setCall={setCall}
+          callAccepted={callAccepted}
+          myVideo={myVideo}
+          yourVideo={yourVideo}
+          stream={stream}
+          answerCall={answerCall}
+        />
+      </div>
     </>
   );
 }
