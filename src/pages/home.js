@@ -192,6 +192,7 @@ function Home({ socket }) {
           yourVideo={yourVideo}
           stream={stream}
           answerCall={answerCall}
+          showVideoCall={showVideoCall}
         />
       </div>
     </>

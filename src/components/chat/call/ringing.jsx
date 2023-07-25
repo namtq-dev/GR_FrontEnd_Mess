@@ -58,7 +58,7 @@ export default function Ringing({ call, setCall, answerCall }) {
         </ul>
       </div>
       {/* Ringtone */}
-      <audio src="../../../../audio/sot.mp3" autoPlay loop></audio>
+      <audio src="../../../../audio/incoming.mp3" autoPlay loop></audio>
     </div>
   );
 }

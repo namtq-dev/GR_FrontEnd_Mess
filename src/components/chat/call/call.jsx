@@ -12,6 +12,7 @@ export default function Call({
   yourVideo,
   stream,
   answerCall,
+  showVideoCall,
 }) {
   const { incomingCall, callEnded, name } = call;
 
@@ -71,6 +72,11 @@ export default function Call({
       {incomingCall && !callAccepted && (
         <Ringing call={call} setCall={setCall} answerCall={answerCall} />
       )}
+
+      {/* Call ringtone */}
+      {!callAccepted && showVideoCall ? (
+        <audio src="../../../../audio/sot.mp3" autoPlay loop></audio>
+      ) : null}
     </>
   );
 }
