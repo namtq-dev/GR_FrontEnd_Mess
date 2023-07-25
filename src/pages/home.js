@@ -8,11 +8,19 @@ import {
 import { Inbox, MainHome } from '../components/chat';
 import SocketContext from '../context/socketContext';
 import Call from '../components/chat/call/call';
+import Peer from 'simple-peer';
+import {
+  getReceiverId,
+  getReceiverName,
+  getReceiverPicture,
+} from '../helpers/conversation';
 
 const callInfos = {
   socketId: '',
-  incomingCall: true,
+  incomingCall: false,
   callEnded: false,
+  name: '',
+  picture: '',
 };
 
 function Home({ socket }) {
@@ -25,10 +33,12 @@ function Home({ socket }) {
   const [typing, setTyping] = useState('');
   const [call, setCall] = useState(callInfos);
   const [callAccepted, setCallAccepted] = useState(false);
-  const [stream, setStream] = useState();
+  const [stream, setStream] = useState(); // for video and audio stream
 
   const myVideo = useRef();
   const yourVideo = useRef();
+
+  const { socketId } = call;
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -62,15 +72,57 @@ function Home({ socket }) {
     socket.on('setup socket', (socketId) => {
       setCall({ ...call, socketId });
     });
+
+    // receive incoming call
+    socket.on('incoming call', (data) => {
+      setCall({
+        ...call,
+        socketId: data.from,
+        name: data.name,
+        picture: data.picture,
+        signal: data.signal,
+        incomingCall: true,
+      });
+    });
   }, []);
+
+  const callUser = () => {
+    enableMedia();
+    setCall({
+      ...call,
+      name: getReceiverName(user.id, activeConversation.users), // get the name of the user i'm calling
+      picture: getReceiverPicture(user.id, activeConversation.users), // get the picture of the user i'm calling
+    });
+
+    // setup peer-to-peer connection between 2 browser
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: stream,
+    });
+
+    // inform other user that i'm calling
+    peer.on('signal', (data) => {
+      socket.emit('call user', {
+        userToCall: getReceiverId(user.id, activeConversation.users),
+        signal: data,
+        from: socketId,
+        myName: `${user.firstName} ${user.lastName}`,
+        myPicture: user.picture,
+      });
+    });
+  };
 
   const setupMedia = () => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((deviceStream) => {
         setStream(deviceStream);
-        // myVideo.current.srcObject = deviceStream;
       });
+  };
+
+  const enableMedia = () => {
+    myVideo.current.srcObject = stream;
   };
   // video call socket and fuctions
 
@@ -80,7 +132,11 @@ function Home({ socket }) {
         <div className="container h-screen flex py-[19px]">
           <Sidebar onlineUsers={onlineUsers} typing={typing} />
           {activeConversation._id ? (
-            <Inbox onlineUsers={onlineUsers} typing={typing} />
+            <Inbox
+              onlineUsers={onlineUsers}
+              typing={typing}
+              callUser={callUser}
+            />
           ) : (
             <MainHome />
           )}
