@@ -1,8 +1,13 @@
 import { useSelector } from 'react-redux';
 import { CallIcon, DotsIcon, SearchLargeIcon, VideoCallIcon } from '../../svg';
+import {
+  getReceiverName,
+  getReceiverPicture,
+} from '../../helpers/conversation';
 
 export default function ChatHeader({ online, callUser }) {
   const { activeConversation } = useSelector((state) => state.chat);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div className="h-[59px] dark:bg-dark_bg_2 flex items-center p16 select-none">
@@ -10,14 +15,14 @@ export default function ChatHeader({ online, callUser }) {
         <div className="flex items-center gap-x-4">
           <button className="btn">
             <img
-              src={activeConversation.picture}
-              alt={activeConversation.name}
+              src={getReceiverPicture(user.id, activeConversation.users)}
+              alt={getReceiverName(user.id, activeConversation.users)}
               className="w-full h-full rounded-full object-cover"
             />
           </button>
           <div className="flex flex-col">
             <h1 className="dark:text-white text-md font-bold">
-              {activeConversation.name}
+              {getReceiverName(user.id, activeConversation.users)}
             </h1>
             <span className="text-xs dark:text-dark_svg_2">
               {online ? 'online' : 'offline'}
@@ -27,7 +32,9 @@ export default function ChatHeader({ online, callUser }) {
         {/* Right */}
         <ul className="flex items-center gap-x-2.5">
           {online ? (
-            <li onClick={() => callUser()}>
+            <li
+            // onClick={() => callUser()}
+            >
               <button className="btn">
                 <VideoCallIcon />
               </button>
