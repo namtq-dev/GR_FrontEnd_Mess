@@ -11,7 +11,13 @@ import SocketContext from '../../../context/socketContext';
 import { DotLoader } from 'react-spinners';
 import VideoThumbnail from 'react-video-thumbnail';
 
-function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
+function HandleFiles({
+  activeIndex,
+  setActiveIndex,
+  message,
+  setError,
+  socket,
+}) {
   const dispatch = useDispatch();
 
   const { files, activeConversation } = useSelector((state) => state.chat);
@@ -79,7 +85,7 @@ function HandleFiles({ activeIndex, setActiveIndex, message, socket }) {
             </div>
           </div>
         ))}
-        <AddNewFiles setActiveIndex={setActiveIndex} />
+        <AddNewFiles setActiveIndex={setActiveIndex} setError={setError} />
       </div>
       <div
         onClick={(eve) => sendFilesHandler(eve)}

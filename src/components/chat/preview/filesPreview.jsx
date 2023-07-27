@@ -4,7 +4,7 @@ import FileViewer from './fileViewer';
 import Input from './input';
 import HandleFiles from './handleFiles';
 
-export default function FilesPreview() {
+export default function FilesPreview({ error, setError }) {
   const [message, setMessage] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -14,11 +14,17 @@ export default function FilesPreview() {
         <Header activeIndex={activeIndex} />
         <FileViewer activeIndex={activeIndex} />
         <div className="w-full flex flex-col items-center">
-          <Input message={message} setMessage={setMessage} />
+          <Input
+            message={message}
+            setMessage={setMessage}
+            error={error}
+            setError={setError}
+          />
           <HandleFiles
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
             message={message}
+            setError={setError}
           />
         </div>
       </div>

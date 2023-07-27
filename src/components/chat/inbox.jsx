@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import ChatHeader from './chatHeader';
 import ChatMessages from './messages/chatMessages';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getMessages } from '../../reducers/features/chatSlice';
 import { ChatActions } from './actions';
 import { checkOnlineStatus } from '../../helpers/conversation';
@@ -12,6 +12,8 @@ export default function Inbox({ onlineUsers, typing, callUser }) {
 
   const { activeConversation, files } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
+
+  const [error, setError] = useState(false);
 
   const values = {
     loginToken: user.loginToken,
@@ -35,11 +37,11 @@ export default function Inbox({ onlineUsers, typing, callUser }) {
           // callUser={callUser}
         />
         {files.length > 0 ? (
-          <FilesPreview />
+          <FilesPreview error={error} setError={setError} />
         ) : (
           <>
             <ChatMessages typing={typing} />
-            <ChatActions />
+            <ChatActions error={error} setError={setError} />
           </>
         )}
       </div>
