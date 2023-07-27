@@ -5,6 +5,7 @@ export default function Attachments({
   showAttachmentsMenu,
   setShowAttachmentsMenu,
   setShowPicker,
+  setError,
 }) {
   return (
     <li className="relative">
@@ -18,7 +19,7 @@ export default function Attachments({
       >
         <AttachmentIcon className="dark:fill-dark_svg_1" />
       </button>
-      {showAttachmentsMenu ? <Menu /> : null}
+      {showAttachmentsMenu ? <Menu setError={setError} /> : null}
     </li>
   );
 }

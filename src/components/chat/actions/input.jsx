@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import SocketContext from '../../../context/socketContext';
 
-function Input({ message, setMessage, textRef, socket }) {
+function Input({ message, setMessage, textRef, error, socket }) {
   const { activeConversation } = useSelector((state) => state.chat);
 
   const [typing, setTyping] = useState(false);
@@ -30,14 +30,20 @@ function Input({ message, setMessage, textRef, socket }) {
 
   return (
     <div className="w-full">
-      <input
-        type="text"
-        className="dark:bg-dark_hover_1 dark:text-dark_text_1 outline-none h-[45px] w-full flex-1 rounded-lg pl-4"
-        placeholder="Type a message"
-        value={message}
-        onChange={onChangeHandler}
-        ref={textRef}
-      />
+      {error ? (
+        <p className="dark:bg-dark_hover_1 text-red-400 h-[45px] w-full flex-1 rounded-lg text-center pt-3">
+          {error}
+        </p>
+      ) : (
+        <input
+          type="text"
+          className="dark:bg-dark_hover_1 dark:text-dark_text_1 outline-none h-[45px] w-full flex-1 rounded-lg pl-4"
+          placeholder="Type a message"
+          value={message}
+          onChange={onChangeHandler}
+          ref={textRef}
+        />
+      )}
     </div>
   );
 }

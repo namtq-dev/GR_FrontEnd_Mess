@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SendIcon } from '../../../svg';
+import { CloseIcon, SendIcon } from '../../../svg';
 import Input from './input';
 import { sendMessage } from '../../../reducers/features/chatSlice';
 import { DotLoader } from 'react-spinners';
@@ -8,7 +8,7 @@ import EmojiPickerWrap from './emojiPickerWrap';
 import { Attachments } from './attachments';
 import SocketContext from '../../../context/socketContext';
 
-function ChatActions({ socket }) {
+function ChatActions({ error, setError, socket }) {
   const dispatch = useDispatch();
 
   const { activeConversation, status } = useSelector((state) => state.chat);
@@ -55,16 +55,28 @@ function ChatActions({ socket }) {
             showAttachmentsMenu={showAttachmentsMenu}
             setShowAttachmentsMenu={setShowAttachmentsMenu}
             setShowPicker={setShowPicker}
+            setError={setError}
           />
         </ul>
-        <Input message={message} setMessage={setMessage} textRef={textRef} />
-        <button type="submit" className="btn">
-          {status === 'loading' && sendMessLoading ? (
-            <DotLoader color="#e9edef" size={25} speedMultiplier={3} />
-          ) : (
-            <SendIcon className="dark:fill-dark_svg_1" />
-          )}
-        </button>
+        <Input
+          message={message}
+          setMessage={setMessage}
+          textRef={textRef}
+          error={error}
+        />
+        {error ? (
+          <div className="btn" onClick={() => setError('')}>
+            <CloseIcon className="dark:fill-dark_svg_1" />
+          </div>
+        ) : (
+          <button type="submit" className="btn">
+            {status === 'loading' && sendMessLoading ? (
+              <DotLoader color="#e9edef" size={25} speedMultiplier={3} />
+            ) : (
+              <SendIcon className="dark:fill-dark_svg_1" />
+            )}
+          </button>
+        )}
       </div>
     </form>
   );

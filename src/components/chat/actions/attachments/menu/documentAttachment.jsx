@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { addFiles } from '../../../../../reducers/features/chatSlice';
 import { getFileType } from '../../../../../helpers/file';
 
-export default function DocumentAttachment() {
+export default function DocumentAttachment({ setError }) {
   const dispatch = useDispatch();
 
   const documentInputRef = useRef(null);
@@ -30,12 +30,15 @@ export default function DocumentAttachment() {
         file.type !== 'audio/wav'
       ) {
         files = files.filter((item) => item.name !== file.name);
-        console.log(file.type);
+        setError(`${file.name} file type is not supported.`);
         return;
       } else if (file.size > 1024 * 1024 * 10) {
         files = files.filter((item) => item.name !== file.name);
+        setError(`${file.name} file size is too large.`);
         return;
       } else {
+        setError('');
+
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {

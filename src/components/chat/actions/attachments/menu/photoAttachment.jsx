@@ -4,7 +4,7 @@ import { PhotoIcon } from '../../../../../svg';
 import { addFiles } from '../../../../../reducers/features/chatSlice';
 import { getFileType } from '../../../../../helpers/file';
 
-export default function PhotoAttachment() {
+export default function PhotoAttachment({ setError }) {
   const dispatch = useDispatch();
 
   const photosInputRef = useRef(null);
@@ -22,11 +22,15 @@ export default function PhotoAttachment() {
         file.type !== 'video/mpeg'
       ) {
         files = files.filter((item) => item.name !== file.name);
+        setError(`${file.name} file type is not supported.`);
         return;
       } else if (file.size > 1024 * 1024 * 10) {
         files = files.filter((item) => item.name !== file.name);
+        setError(`${file.name} file size is too large.`);
         return;
       } else {
+        setError('');
+
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (readerEvent) => {

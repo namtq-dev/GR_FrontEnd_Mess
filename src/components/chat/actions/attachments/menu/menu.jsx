@@ -7,7 +7,7 @@ import {
 import DocumentAttachment from './documentAttachment';
 import PhotoAttachment from './photoAttachment';
 
-export default function Menu() {
+export default function Menu({ setError }) {
   return (
     <ul className="absolute bottom-14 openEmojiAnimation">
       <li>
@@ -20,7 +20,7 @@ export default function Menu() {
           <ContactIcon />
         </button>
       </li>
-      <DocumentAttachment />
+      <DocumentAttachment setError={setError} />
       <li>
         <button type="button" className="bg-[#D3396D] rounded-full">
           <CameraIcon />
@@ -31,7 +31,7 @@ export default function Menu() {
           <StickerIcon />
         </button>
       </li>
-      <PhotoAttachment />
+      <PhotoAttachment setError={setError} />
     </ul>
   );
 }
