@@ -29,6 +29,7 @@ function ChatActions({ error, setError, socket }) {
   };
   const sendMessageHandler = async (eve) => {
     eve.preventDefault();
+    if (!values.message && values.files.length === 0) return;
     setSendMessLoading(true);
     let newMsg = await dispatch(sendMessage(values));
     socket.emit('send message', newMsg.payload);
