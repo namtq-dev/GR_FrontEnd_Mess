@@ -32,7 +32,7 @@ export default function Inbox({ onlineUsers, typing, callUser }) {
             user.id,
             activeConversation.users
           )}
-          callUser={callUser}
+          // callUser={callUser}
         />
         {files.length > 0 ? (
           <FilesPreview />

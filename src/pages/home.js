@@ -9,11 +9,11 @@ import { Inbox, MainHome } from '../components/chat';
 import SocketContext from '../context/socketContext';
 import Call from '../components/chat/call/call';
 import Peer from 'simple-peer';
-import {
-  getReceiverId,
-  getReceiverName,
-  getReceiverPicture,
-} from '../helpers/conversation';
+// import {
+//   getReceiverId,
+//   getReceiverName,
+//   getReceiverPicture,
+// } from '../helpers/conversation';
 
 const callInfos = {
   socketId: '',
@@ -39,9 +39,9 @@ function Home({ socket }) {
 
   const myVideo = useRef();
   const yourVideo = useRef();
-  const connectionRef = useRef();
+  // const connectionRef = useRef();
 
-  const { socketId } = call;
+  // const { socketId } = call;
 
   useEffect(() => {
     if (user?.loginToken) {
@@ -70,126 +70,126 @@ function Home({ socket }) {
   }, []);
 
   // video call socket and fuctions
-  useEffect(() => {
-    setupMedia();
-    socket.on('setup socket', (socketId) => {
-      console.log('setup socket - my id: ', socketId);
-      setCall({ ...call, socketId: socketId });
-    });
+  // useEffect(() => {
+  //   setupMedia();
+  //   socket.on('setup socket', (socketId) => {
+  //     console.log('setup socket - my id: ', socketId);
+  //     setCall({ ...call, socketId: socketId });
+  //   });
 
-    // receive incoming call
-    socket.on('incoming call', (data) => {
-      console.log('incoming call from: ', data.from);
+  //   // receive incoming call
+  //   socket.on('incoming call', (data) => {
+  //     console.log('incoming call from: ', data.from);
 
-      setCall({
-        ...call,
-        socketId: data.from,
-        name: data.name,
-        picture: data.picture,
-        signal: data.signal,
-        incomingCall: true,
-      });
-    });
+  //     setCall({
+  //       ...call,
+  //       socketId: data.from,
+  //       name: data.name,
+  //       picture: data.picture,
+  //       signal: data.signal,
+  //       incomingCall: true,
+  //     });
+  //   });
 
-    socket.on('call ended', () => {
-      console.log('call ended');
+  //   socket.on('call ended', () => {
+  //     console.log('call ended');
 
-      setShowVideoCall(false);
-      setCall({ ...call, callEnded: true, incomingCall: false });
-      myVideo.current.srcObject = null;
-      if (callAccepted) {
-        connectionRef?.current?.destroy();
-      }
-    });
-  }, []);
+  //     setShowVideoCall(false);
+  //     setCall({ ...call, callEnded: true, incomingCall: false });
+  //     myVideo.current.srcObject = null;
+  //     if (callAccepted) {
+  //       connectionRef?.current?.destroy();
+  //     }
+  //   });
+  // }, []);
 
-  const callUser = () => {
-    enableMedia();
-    setCall({
-      ...call,
-      name: getReceiverName(user.id, activeConversation.users), // get the name of the user i'm calling
-      picture: getReceiverPicture(user.id, activeConversation.users), // get the picture of the user i'm calling
-    });
+  // const callUser = () => {
+  //   enableMedia();
+  //   setCall({
+  //     ...call,
+  //     name: getReceiverName(user.id, activeConversation.users), // get the name of the user i'm calling
+  //     picture: getReceiverPicture(user.id, activeConversation.users), // get the picture of the user i'm calling
+  //   });
 
-    // setup peer-to-peer connection between 2 browser
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream: stream,
-    });
+  //   // setup peer-to-peer connection between 2 browser
+  //   const peer = new Peer({
+  //     initiator: true,
+  //     trickle: false,
+  //     stream: stream,
+  //   });
 
-    // inform other user that i'm calling
-    peer.on('signal', (data) => {
-      console.log('make a call to other user, my socket id: ', socketId);
+  //   // inform other user that i'm calling
+  //   peer.on('signal', (data) => {
+  //     console.log('make a call to other user, my socket id: ', socketId);
 
-      socket.emit('call user', {
-        userToCall: getReceiverId(user.id, activeConversation.users),
-        signal: data,
-        from: socketId,
-        myName: `${user.firstName} ${user.lastName}`,
-        myPicture: user.picture,
-      });
-    });
+  //     socket.emit('call user', {
+  //       userToCall: getReceiverId(user.id, activeConversation.users),
+  //       signal: data,
+  //       from: socketId,
+  //       myName: `${user.firstName} ${user.lastName}`,
+  //       myPicture: user.picture,
+  //     });
+  //   });
 
-    peer.on('stream', (stream) => {
-      yourVideo.current.srcObject = stream;
-    });
+  //   peer.on('stream', (stream) => {
+  //     yourVideo.current.srcObject = stream;
+  //   });
 
-    socket.on('call accepted', (signal) => {
-      console.log('call accepted');
+  //   socket.on('call accepted', (signal) => {
+  //     console.log('call accepted');
 
-      setCallAccepted(true);
-      peer.signal(signal); // connect with other user's signal
-    });
+  //     setCallAccepted(true);
+  //     peer.signal(signal); // connect with other user's signal
+  //   });
 
-    connectionRef.current = peer;
-  };
+  //   connectionRef.current = peer;
+  // };
 
-  const answerCall = () => {
-    enableMedia();
-    setCallAccepted(true);
+  // const answerCall = () => {
+  //   enableMedia();
+  //   setCallAccepted(true);
 
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream: stream,
-    });
+  //   const peer = new Peer({
+  //     initiator: false,
+  //     trickle: false,
+  //     stream: stream,
+  //   });
 
-    peer.on('signal', (data) => {
-      console.log('answer a call from: ', call.socketId);
-      socket.emit('answer call', { signal: data, to: call.socketId });
-    });
+  //   peer.on('signal', (data) => {
+  //     console.log('answer a call from: ', call.socketId);
+  //     socket.emit('answer call', { signal: data, to: call.socketId });
+  //   });
 
-    peer.on('stream', (stream) => {
-      yourVideo.current.srcObject = stream;
-    });
+  //   peer.on('stream', (stream) => {
+  //     yourVideo.current.srcObject = stream;
+  //   });
 
-    peer.signal(call.signal); // connect with other user's signal
-    connectionRef.current = peer;
-  };
+  //   peer.signal(call.signal); // connect with other user's signal
+  //   connectionRef.current = peer;
+  // };
 
-  const endCall = () => {
-    console.log('i end this call');
+  // const endCall = () => {
+  //   console.log('i end this call');
 
-    setShowVideoCall(false);
-    setCall({ ...call, callEnded: true, incomingCall: false });
-    myVideo.current.srcObject = null;
-    socket.emit('end call', call.socketId);
-    connectionRef?.current?.destroy();
-  };
+  //   setShowVideoCall(false);
+  //   setCall({ ...call, callEnded: true, incomingCall: false });
+  //   myVideo.current.srcObject = null;
+  //   socket.emit('end call', call.socketId);
+  //   connectionRef?.current?.destroy();
+  // };
 
-  const setupMedia = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((deviceStream) => {
-        setStream(deviceStream);
-      });
-  };
+  // const setupMedia = () => {
+  //   navigator.mediaDevices
+  //     .getUserMedia({ video: true, audio: true })
+  //     .then((deviceStream) => {
+  //       setStream(deviceStream);
+  //     });
+  // };
 
-  const enableMedia = () => {
-    myVideo.current.srcObject = stream;
-    setShowVideoCall(true);
-  };
+  // const enableMedia = () => {
+  //   myVideo.current.srcObject = stream;
+  //   setShowVideoCall(true);
+  // };
   // video call socket and fuctions
 
   return (
@@ -201,7 +201,7 @@ function Home({ socket }) {
             <Inbox
               onlineUsers={onlineUsers}
               typing={typing}
-              callUser={callUser}
+              // callUser={callUser}
             />
           ) : (
             <MainHome />
@@ -220,9 +220,9 @@ function Home({ socket }) {
           myVideo={myVideo}
           yourVideo={yourVideo}
           stream={stream}
-          answerCall={answerCall}
+          // answerCall={answerCall}
           showVideoCall={showVideoCall}
-          endCall={endCall}
+          // endCall={endCall}
         />
       </div>
     </>
