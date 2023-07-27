@@ -23,7 +23,7 @@ export default function MessageFile({ fileItem, message, mine }) {
           }
     `}
         >
-          <p
+          <div
             className={`h-full text-sm ${
               type !== 'IMAGE' && type !== 'VIDEO' ? 'pb-5' : ''
             }`}
@@ -33,7 +33,7 @@ export default function MessageFile({ fileItem, message, mine }) {
             ) : (
               <OthersFile file={file} type={type} />
             )}
-          </p>
+          </div>
           <span className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_5 leading-none">
             {moment(message.createdAt).format('HH:mm')}
           </span>
