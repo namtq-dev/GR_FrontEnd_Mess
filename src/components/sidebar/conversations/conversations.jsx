@@ -30,7 +30,7 @@ export default function Conversations({ onlineUsers, typing }) {
                 <Conversation
                   conver={conver}
                   key={conver._id}
-                  online={checkOnline}
+                  online={!conver.isGroup && checkOnline}
                   typing={typing}
                 />
               );

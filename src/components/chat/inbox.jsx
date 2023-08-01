@@ -29,11 +29,15 @@ export default function Inbox({ onlineUsers, typing, callUser }) {
     <div className="relative w-full h-full border-l dark:border-l-dark_border_2 select-none overflow-hidden ">
       <div>
         <ChatHeader
-          online={checkOnlineStatus(
-            onlineUsers,
-            user.id,
-            activeConversation.users
-          )}
+          online={
+            activeConversation.isGroup
+              ? false
+              : checkOnlineStatus(
+                  onlineUsers,
+                  user.id,
+                  activeConversation.users
+                )
+          }
           // callUser={callUser}
         />
         {files.length > 0 ? (

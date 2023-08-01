@@ -5,7 +5,10 @@ import {
   getReceiverPicture,
 } from '../../helpers/conversation';
 
-export default function ChatHeader({ online, callUser }) {
+export default function ChatHeader({
+  online,
+  // callUser
+}) {
   const { activeConversation } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
 
@@ -31,7 +34,7 @@ export default function ChatHeader({ online, callUser }) {
                 : getReceiverName(user.id, activeConversation.users)}
             </h3>
             <span className="text-xs dark:text-dark_svg_2">
-              {online ? 'online' : 'offline'}
+              {online ? 'online' : activeConversation.isGroup ? '' : 'offline'}
             </span>
           </div>
         </div>
