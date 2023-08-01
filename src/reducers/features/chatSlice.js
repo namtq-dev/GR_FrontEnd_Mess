@@ -54,6 +54,29 @@ export const createOrOpenConversation = createAsyncThunk(
   }
 );
 
+export const createGroupConversation = createAsyncThunk(
+  'conversation/createGroupChat',
+  async (values, { rejectWithValue }) => {
+    try {
+      const { loginToken, groupName, users } = values;
+
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/group`,
+        { groupName, users },
+        {
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        }
+      );
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const getMessages = createAsyncThunk(
   'conversation/messages',
   async (values, { rejectWithValue }) => {
