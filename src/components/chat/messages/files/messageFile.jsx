@@ -12,7 +12,18 @@ export default function MessageFile({ fileItem, message, mine }) {
         mine ? 'ml-auto justify-end ' : ''
       }`}
     >
-      <div>
+      <div className="relative">
+        {/* Sender picture */}
+        {!mine && message.conversation.isGroup && (
+          <div className="absolute top-0.5 left-[-37px]">
+            <img
+              src={message.sender.picture}
+              alt=""
+              className="w-8 h-8 rounded-full"
+            />
+          </div>
+        )}
+        {/* Message content */}
         <div
           className={`relative h-full dark:text-dark_text_1 rounded-lg
           ${mine ? 'border-[3px] border-green_3' : 'dark:bg-dark_bg_2'}
