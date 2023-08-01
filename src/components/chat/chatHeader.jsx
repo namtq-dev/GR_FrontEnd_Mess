@@ -15,15 +15,21 @@ export default function ChatHeader({ online, callUser }) {
         <div className="flex items-center gap-x-4">
           <button className="btn">
             <img
-              src={getReceiverPicture(user.id, activeConversation.users)}
-              alt={getReceiverName(user.id, activeConversation.users)}
+              src={
+                activeConversation.isGroup
+                  ? activeConversation.picture
+                  : getReceiverPicture(user.id, activeConversation.users)
+              }
+              alt=""
               className="w-full h-full rounded-full object-cover"
             />
           </button>
           <div className="flex flex-col">
-            <h1 className="dark:text-white text-md font-bold">
-              {getReceiverName(user.id, activeConversation.users)}
-            </h1>
+            <h3 className="dark:text-white text-md font-bold">
+              {activeConversation.isGroup
+                ? activeConversation.name
+                : getReceiverName(user.id, activeConversation.users)}
+            </h3>
             <span className="text-xs dark:text-dark_svg_2">
               {online ? 'online' : 'offline'}
             </span>

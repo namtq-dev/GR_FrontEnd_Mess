@@ -16,6 +16,7 @@ function Conversation({ conver, online, typing, socket }) {
 
   const values = {
     receiverId: getReceiverId(user.id, conver.users),
+    isGroup: conver.isGroup ? conver._id : false,
     loginToken: user.loginToken,
   };
   const openConversation = async () => {

@@ -35,11 +35,11 @@ export const createOrOpenConversation = createAsyncThunk(
   'conversation/createOrOpen',
   async (values, { rejectWithValue }) => {
     try {
-      const { loginToken, receiverId } = values;
+      const { loginToken, receiverId, isGroup } = values;
 
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/conversation`,
-        { receiverId },
+        { receiverId, isGroup },
         {
           headers: {
             Authorization: `Bearer ${loginToken}`,
