@@ -41,15 +41,21 @@ function Conversation({ conver, online, typing, socket }) {
             } `}
           >
             <img
-              src={getReceiverPicture(user.id, conver.users)}
+              src={
+                conver.isGroup
+                  ? conver.picture
+                  : getReceiverPicture(user.id, conver.users)
+              }
               alt="conversation picture"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="w-full flex flex-col">
-            <h1 className="font-bold flex items-center gap-x-2">
-              {getReceiverName(user.id, conver.users)}
-            </h1>
+            <h3 className="font-bold flex items-center gap-x-2">
+              {conver.isGroup
+                ? conver.name
+                : getReceiverName(user.id, conver.users)}
+            </h3>
             <div>
               <div className="flex items-center gap-x-1 dark:text-dark_text_2">
                 <div className="flex-1 items-center gap-x-1 dark:text-dark_text_2">

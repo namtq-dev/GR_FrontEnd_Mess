@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReturnIcon, ValidIcon } from '../../../../svg';
 import UnderlineInput from './underlineInput';
 import MultipleSelect from './multipleSelect';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
+import { createGroupConversation } from '../../../../reducers/features/chatSlice';
 
 export default function CreateGroup({ setShowCreateGroup }) {
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.user);
   const { status } = useSelector((state) => state.chat);
 
-  const [name, setName] = useState('');
+  const [groupName, setGroupName] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
@@ -48,6 +51,24 @@ export default function CreateGroup({ setShowCreateGroup }) {
     }
   };
 
+  const createGroupHandler = async () => {
+    if (status !== 'loading') {
+      let users = [];
+      selectedUsers.forEach((user) => {
+        users.push(user.value); // get users' ID only
+      });
+
+      let values = {
+        groupName,
+        users,
+        loginToken: user.loginToken,
+      };
+
+      let newConver = await dispatch(createGroupConversation(values));
+      setShowCreateGroup(false);
+    }
+  };
+
   return (
     <div className="createGroupAnimation relative flex0030 h-full z-40">
       <div className="mt-5">
@@ -57,7 +78,7 @@ export default function CreateGroup({ setShowCreateGroup }) {
         >
           <ReturnIcon className="fill-white" />
         </button>
-        <UnderlineInput name={name} setName={setName} />
+        <UnderlineInput groupName={groupName} setGroupName={setGroupName} />
         {/* Select users for group chat */}
         <MultipleSelect
           searchResults={searchResults}
@@ -67,7 +88,7 @@ export default function CreateGroup({ setShowCreateGroup }) {
         <div className="absolute bottom-1/3 left-1/2 -translate-x-1/2">
           <button
             className="btn bg-green_1 scale-150 hover:bg-green-500"
-            // onClick={() => createGroupHandler()}
+            onClick={() => createGroupHandler()}
           >
             {status === 'loading' ? (
               <ClipLoader color="#E9EDEF" size={25} />

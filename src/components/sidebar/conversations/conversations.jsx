@@ -15,7 +15,9 @@ export default function Conversations({ onlineUsers, typing }) {
           conversations
             .filter(
               (conver) =>
-                conver.latestMessage || conver._id === activeConversation._id
+                conver.latestMessage ||
+                conver._id === activeConversation._id ||
+                conver.isGroup === true
             )
             .map((conver) => {
               let checkOnline = checkOnlineStatus(
